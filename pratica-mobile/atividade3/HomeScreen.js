@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [xValue, setXValue] = useState('');
   const [yValue, setYValue] = useState('');
   const [zValue, setZValue] = useState('');
 
+  if (Math.abs(xValue) > 0.7 || Math.abs(yValue) > 1 || Math.abs(zValue) > 1) {
+    navigation.navigate('SecondScreen', {});
+  }
+
   useEffect(() => {
-    const subscription = Accelerometer.addListener(accelerometerData => {
+    const subscription = Accelerometer.addListener((accelerometerData) => {
       const { x, y, z } = accelerometerData;
       setXValue(x.toFixed(2));
       setYValue(y.toFixed(2));
